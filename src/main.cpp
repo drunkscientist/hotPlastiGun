@@ -20,9 +20,11 @@ const int stepEnPin = 10;
 const int fetPin = 7;
 const int switchButt = 11;
 const int heaterSwtch = 5;
-int heatSetting = 100;
+int heatSetting = 200;
+int outputSpeed = 500;
 
-bool heatMode;
+bool heatMode = 0;
+bool extruding = 0;
 
 int Vo;
 const float R1 = 4700;
@@ -62,17 +64,19 @@ void updateLcd(){
   Serial.println(" F"); 
 
 */
+
+
   u8g2.clearBuffer();					// clear the internal memory
   u8g2.setFont(u8g2_font_ncenB08_tr);	// choose a suitable font
-  u8g2.drawStr(0,10,"temp reading");	// write something to the internal memory
-  u8g2.drawStr(50, 20, Tset);
+  u8g2.drawStr(0,10,"temp setting/reading");
+  u8g2.drawStr(0, 60, Tset);
   u8g2.drawStr(60,60,Tchar);
   
   
   if(heatMode){
     u8g2.drawStr(30,30, "HEATER ON");
     if(digitalRead(fetPin) == 1){
-      u8g2.drawStr(40, 50, "!!!");
+      u8g2.drawStr(40, 50, "!!!!!!!!!!!!!");
   }
   }
   
@@ -106,8 +110,9 @@ void setup() {
 
   u8g2.begin();
 
-  extruder.setMaxSpeed(500);
-  extruder.setAcceleration(300);
+  extruder.setMaxSpeed(outputSpeed);
+  extruder.setAcceleration(500);
+  extruder.setSpeed(outputSpeed);
   //extruder.moveTo(1000000);
 }
 
@@ -115,7 +120,6 @@ void setup() {
 void loop() {
 
   heatMode = !digitalRead(heaterSwtch);
-  
   if (heatMode){
     heatMng();
   }
@@ -124,17 +128,20 @@ void loop() {
   }
 
   readTemp(); //read thermistor value, do maths to determine temp
-  extruder.runSpeed(); //still need to get trigger to update speed by...
+  //if (extruding){
+    extruder.runSpeed(); //still need to get trigger to update speed by...
+  //}
   updateLcd(); //update i2c lcd, display things on it
   
   if (digitalRead(switchButt) == LOW){
     digitalWrite(stepEnPin, 1);
-    extruder.setSpeed(300);
+    extruding == 1;
     Serial.println("button press recvd");
   }
 
   if (digitalRead(switchButt) == 1){
     digitalWrite(stepEnPin, 0);
+    extruding == 0;
   }
 
 
