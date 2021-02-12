@@ -15,7 +15,7 @@ const int step = 8;
 const int dir = 9;
 AccelStepper extruder(1, step, dir);
 
-const int ThermPin = 0;
+const int ThermPin = A0;
 const int stepEnPin = 10;
 const int fetPin = 7;
 const int switchButt = 11;
@@ -56,13 +56,13 @@ void updateLcd(){
   dtostrf(T, 4, 2, Tchar);//translate temp value into something the lcd can display
   dtostrf(heatSetting, 3, 0, Tset);
 
-/*
+
 
 
   Serial.print("Temperature: "); 
   Serial.print(T);
   Serial.println(" F"); 
-
+/*
 */
 
 
