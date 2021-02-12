@@ -3,7 +3,7 @@
 a less portable 3d pen/handheld plastic extruder. used mostly spare 3d printing parts and an arduino uno
 
 parts list:
-- arduino uno
+- arduino (doesnt matter much which)
 - 4.7k resistor
 - e3d v6 hotend set:
   - 100k ntc thermistor
