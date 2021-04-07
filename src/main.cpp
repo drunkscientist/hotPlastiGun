@@ -10,16 +10,17 @@
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R2, /* reset=*/ U8X8_PIN_NONE);
 
-
-const int step = 8;
-const int dir = 9;
+const int stepEnPin = 15;
+const int step = 14;
+const int dir = 16;
 AccelStepper extruder(1, step, dir);
 
-const int ThermPin = A0;
-const int stepEnPin = 10;
-const int fetPin = 7;
-const int switchButt = 11;
-const int heaterSwtch = 5;
+const int ThermPin = A9;
+
+
+const int fetPin = 10;
+const int switchButt = 4;
+const int heaterSwtch = 0;
 int heatSetting = 200;
 int outputSpeed = 500;
 
@@ -56,16 +57,11 @@ void updateLcd(){
   dtostrf(T, 4, 2, Tchar);//translate temp value into something the lcd can display
   dtostrf(heatSetting, 3, 0, Tset);
 
-
-
-
   Serial.print("Temperature: "); 
   Serial.print(T);
   Serial.println(" F"); 
 /*
 */
-
-
   u8g2.clearBuffer();					// clear the internal memory
   u8g2.setFont(u8g2_font_ncenB08_tr);	// choose a suitable font
   u8g2.drawStr(0,10,"temp setting/reading");
@@ -77,13 +73,9 @@ void updateLcd(){
     u8g2.drawStr(30,30, "HEATER ON");
     if(digitalRead(fetPin) == 1){
       u8g2.drawStr(40, 50, "!!!!!!!!!!!!!");
+    }
   }
-  }
-  
-  
   u8g2.sendBuffer();
-
-
 }
 
 void heatMng(){
@@ -135,13 +127,13 @@ void loop() {
   
   if (digitalRead(switchButt) == LOW){
     digitalWrite(stepEnPin, 1);
-    extruding == 1;
+  //  extruding == 1;
     Serial.println("button press recvd");
   }
 
   if (digitalRead(switchButt) == 1){
     digitalWrite(stepEnPin, 0);
-    extruding == 0;
+  //  extruding == 0;
   }
 
 
