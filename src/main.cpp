@@ -120,21 +120,11 @@ void loop() {
   }
 
   readTemp(); //read thermistor value, do maths to determine temp
-  //if (extruding){
-    extruder.runSpeed(); //still need to get trigger to update speed by...
-  //}
-  updateLcd(); //update i2c lcd, display things on it
+  extruder.runSpeed(); //still need to get trigger to update speed by...
+  updateLcd(); //update i2c lcd, display things on it 
+  digitalWrite(stepEnPin, digitalRead(switchButt));
+    //extruder.stop();
   
-  if (digitalRead(switchButt) == LOW){
-    digitalWrite(stepEnPin, 1);
-  //  extruding == 1;
-    Serial.println("button press recvd");
-  }
-
-  if (digitalRead(switchButt) == 1){
-    digitalWrite(stepEnPin, 0);
-  //  extruding == 0;
-  }
 
 
 
